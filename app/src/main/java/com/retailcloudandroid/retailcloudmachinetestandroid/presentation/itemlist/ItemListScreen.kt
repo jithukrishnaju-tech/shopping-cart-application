@@ -46,11 +46,13 @@ fun ItemListScreen(
         bottomBar = {
             if (cartItems.isNotEmpty()) {
                 Surface(
+                    modifier = Modifier.fillMaxWidth(),
                     tonalElevation = 8.dp,
                     shadowElevation = 8.dp
                 ) {
                     Row(
                         modifier = Modifier
+                            .navigationBarsPadding()
                             .fillMaxWidth()
                             .padding(16.dp),
                         horizontalArrangement = Arrangement.SpaceBetween
