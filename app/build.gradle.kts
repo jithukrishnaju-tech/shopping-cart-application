@@ -18,6 +18,8 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "BASE_URL", "\"https://c01a428178544c239bb346a2e3a2293f.api.mockbin.io/\"")
     }
 
     buildTypes {
