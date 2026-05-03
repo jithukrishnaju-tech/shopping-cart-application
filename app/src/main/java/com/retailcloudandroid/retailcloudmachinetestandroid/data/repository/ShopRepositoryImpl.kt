@@ -4,6 +4,7 @@ import com.retailcloudandroid.retailcloudmachinetestandroid.data.local.dao.CartD
 import com.retailcloudandroid.retailcloudmachinetestandroid.data.local.entity.CartItemEntity
 import com.retailcloudandroid.retailcloudmachinetestandroid.data.mapper.toDomain
 import com.retailcloudandroid.retailcloudmachinetestandroid.data.remote.api.ShopApi
+import com.retailcloudandroid.retailcloudmachinetestandroid.data.util.toDomainException
 import com.retailcloudandroid.retailcloudmachinetestandroid.domain.entity.CartItem
 import com.retailcloudandroid.retailcloudmachinetestandroid.domain.entity.Item
 import com.retailcloudandroid.retailcloudmachinetestandroid.domain.repository.ShopRepository
@@ -17,8 +18,11 @@ class ShopRepositoryImpl @Inject constructor(
 ) : ShopRepository {
 
     override suspend fun getItems(): Result<List<Item>> {
-        return runCatching {
-            shopApi.getItems().map { it.toDomain() }
+        return try {
+            val items = shopApi.getItems().map { it.toDomain() }
+            Result.success(items)
+        } catch (e: Exception) {
+            Result.failure(e.toDomainException())
         }
     }
 
@@ -28,16 +32,21 @@ class ShopRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun addToCart(item: Item) {
-        cartDao.insertOrIncrementQuantity(
-            CartItemEntity(
-                itemId = item.id,
-                itemName = item.name,
-                sellingPrice = item.sellingPrice,
-                taxPercentage = item.taxPercentage,
-                quantity = 1
+    override suspend fun addToCart(item: Item): Result<Unit> {
+        return try {
+            cartDao.insertOrIncrementQuantity(
+                CartItemEntity(
+                    itemId = item.id,
+                    itemName = item.name,
+                    sellingPrice = item.sellingPrice,
+                    taxPercentage = item.taxPercentage,
+                    quantity = 1
+                )
             )
-        )
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e.toDomainException())
+        }
     }
 
     override suspend fun clearCart() {

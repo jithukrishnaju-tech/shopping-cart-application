@@ -2,6 +2,7 @@ package com.retailcloudandroid.retailcloudmachinetestandroid.presentation.common
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ErrorOutline
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.filled.WifiOff
 import androidx.compose.material3.*
@@ -26,7 +27,10 @@ fun ErrorScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Icon(
-            imageVector = if (isNetworkError) Icons.Default.WifiOff else Icons.Default.Warning,
+            imageVector = if (isNetworkError) 
+                Icons.Default.WifiOff 
+            else 
+                Icons.Default.ErrorOutline,
             contentDescription = null,
             modifier = Modifier.size(64.dp),
             tint = MaterialTheme.colorScheme.error
@@ -35,14 +39,17 @@ fun ErrorScreen(
         Text(
             text = message,
             style = MaterialTheme.typography.titleMedium,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(horizontal = 32.dp)
         )
         if (isNetworkError) {
+            Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "Check your internet connection",
+                text = "Check your internet connection and try again",
                 style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(horizontal = 32.dp)
             )
         }
         Spacer(modifier = Modifier.height(24.dp))

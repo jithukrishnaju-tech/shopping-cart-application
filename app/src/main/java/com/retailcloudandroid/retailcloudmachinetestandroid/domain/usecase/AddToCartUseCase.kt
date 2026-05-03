@@ -7,7 +7,7 @@ import javax.inject.Inject
 class AddToCartUseCase @Inject constructor(
     private val repository: ShopRepository
 ) {
-    suspend operator fun invoke(item: Item) {
-        repository.addToCart(item)
+    suspend operator fun invoke(item: Item): Result<Unit> {
+        return repository.addToCart(item)
     }
 }
