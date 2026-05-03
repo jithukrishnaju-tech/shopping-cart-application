@@ -3,6 +3,8 @@ package com.retailcloudandroid.retailcloudmachinetestandroid.presentation.itemli
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -33,12 +35,25 @@ fun ItemListScreen(
             TopAppBar(
                 title = { Text("Items") },
                 actions = {
-                    Button(
+                    IconButton(
                         onClick = onNavigateToCart,
                         enabled = cartItems.isNotEmpty(),
                         modifier = Modifier.padding(end = 8.dp)
                     ) {
-                        Text("View Cart ($totalQuantity)")
+                        BadgedBox(
+                            badge = {
+                                if (totalQuantity > 0) {
+                                    Badge {
+                                        Text(totalQuantity.toString())
+                                    }
+                                }
+                            }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.ShoppingCart,
+                                contentDescription = "View Cart"
+                            )
+                        }
                     }
                 }
             )
